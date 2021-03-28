@@ -61,14 +61,16 @@ for j in range(1,51):
 i_index = defaultdict(list)
 for word in dictionary:
     # i_index[word]
+    templist = []
     for docid in range(1,51):
         if word in files[docid-1]:
-            i_index[word].append(docid)
-    l = len(i_index[word])
+            templist.append(docid-1)
+            # i_index[word].append(docid-1)
+    l = len(templist)
     # the 0th element of the key-value list = frequency of documents for 'word'
-    i_index[word].insert(0,l) 
+    i_index[word] = [l, templist]
 
-print(i_index.keys())
+# print(i_index.keys())
 
 
 ##### form positional index
@@ -91,8 +93,6 @@ for word in dictionary:
 # print('write', p_index['write'])
 # print( '/n')
 # print('written', p_index['written'])
-
-
 
 
 with open('inverted_index.txt', 'w') as file1:
