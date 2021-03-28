@@ -39,8 +39,6 @@ dictionary = list( sorted( set([stemmer.stem(x) for x in words])) )
 
 
 
-#### form positional index
-
 ## all file data at each index. type = 2d arr
 files = [[]]
 for j in range(1,51):
@@ -54,12 +52,27 @@ for j in range(1,51):
     docid_words = [w.lower() for w in docid_tokens]
     #remove stopwords
     wo_stopwords = [wrd for wrd in docid_words if not wrd in stop_words]
-    files.append(wo_stopwords)
+    # stem and order alphabetically
+    docid_stem = list( sorted( set([stemmer.stem(x) for x in wo_stopwords])) )
+    files.append(docid_stem)
+
+#### inverted index
+
+i_index = defaultdict(list)for word in dictionary:
+    # i_index[word]
+    for docid in range(1,51):
+        if word in files[docid-1]:
+            i_index[word].append(docid)
+    l = len(i_index[word])
+    # the 0th element of the key-value list = frequency of documents for 'word'
+    i_index[word].insert(0,l) 
+
+print(i_index.keys())
 
 
-##### form positional index 
+##### form positional index
+ 
 p_index = defaultdict(dict)
-
 for word in dictionary:
     # p_index[word] = []
     posting_list = []
@@ -73,5 +86,8 @@ for word in dictionary:
             docs += 1
     p_index[word] = [docs, posting_list]
 
-print(p_index['write'])
+# # print(p_index.keys())
+# print('write', p_index['write'])
+# print( '/n')
+# print('written', p_index['written'])
 
