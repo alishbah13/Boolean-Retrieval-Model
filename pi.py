@@ -1,7 +1,7 @@
 from nltk.tokenize import RegexpTokenizer, word_tokenize
 from nltk.stem import snowball
 from collections import defaultdict
-
+import json
 
 ##### stop words list
 f = open("Stopword-List.txt","r")
@@ -58,7 +58,8 @@ for j in range(1,51):
 
 #### inverted index
 
-i_index = defaultdict(list)for word in dictionary:
+i_index = defaultdict(list)
+for word in dictionary:
     # i_index[word]
     for docid in range(1,51):
         if word in files[docid-1]:
@@ -91,3 +92,13 @@ for word in dictionary:
 # print( '/n')
 # print('written', p_index['written'])
 
+
+
+
+with open('inverted_index.txt', 'w') as file1:
+     file1.write(json.dumps(i_index)) # use `json.loads` to do the reverse
+file1.close()
+
+with open('positional_index.txt', 'w') as file2:
+     file2.write(json.dumps(p_index)) # use `json.loads` to do the reverse
+file2.close()
