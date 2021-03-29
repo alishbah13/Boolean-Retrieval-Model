@@ -31,11 +31,12 @@ tokens = tokenizer.tokenize(stories)
 lower_words = [w.lower() for w in tokens]
 
 #remove stop words
-words = [wrd for wrd in lower_words if not wrd in stop_words]
-
+word = set([wrd for wrd in lower_words if not wrd in stop_words])
+dictionary = list(word)
+print(dictionary)
 # stem and order alphabetically
-stemmer = snowball.SnowballStemmer('english')
-dictionary = list( sorted( set([stemmer.stem(x) for x in words])) )
+# stemmer = snowball.SnowballStemmer('english')
+# dictionary = list( sorted( set([stemmer.stem(x) for x in words])) )
 
 
 
@@ -50,27 +51,11 @@ for j in range(1,51):
     docid_tokens = tokenizer.tokenize(text)
     # case fold to lowercase
     docid_words = [w.lower() for w in docid_tokens]
-    #remove stopwords
-    wo_stopwords = [wrd for wrd in docid_words if not wrd in stop_words]
-    # stem and order alphabetically
-    docid_stem = list( sorted( set([stemmer.stem(x) for x in wo_stopwords])) )
-    files.append(docid_stem)
+    # stem
+    # docid_stem = list( [stemmer.stem(x) for x in docid_words])
+    print(docid_words)
+    files.append(docid_words)
 
-#### inverted index
-
-i_index = defaultdict(list)
-for word in dictionary:
-    # i_index[word]
-    templist = []
-    for docid in range(1,51):
-        if word in files[docid-1]:
-            templist.append(docid-1)
-            # i_index[word].append(docid-1)
-    l = len(templist)
-    # the 0th element of the key-value list = frequency of documents for 'word'
-    i_index[word] = [l, templist]
-
-# print(i_index.keys())
 
 
 ##### form positional index
@@ -80,24 +65,19 @@ for word in dictionary:
     # p_index[word] = []
     posting_list = []
     docs = 0
+    temp = {}
     for docid in range(1,51):
-        temp = {}
         positions = [i for i, x in enumerate(files[docid]) if x == word]
         if len(positions) > 0 :
             temp[docid] = [len(positions), positions]
-            posting_list.append(temp)
+            # posting_list.append(temp)
             docs += 1
-    p_index[word] = [docs, posting_list]
+    p_index[word] = [docs, temp]
 
 # # print(p_index.keys())
 # print('write', p_index['write'])
 # print( '/n')
 # print('written', p_index['written'])
-
-
-with open('inverted_index.txt', 'w') as file1:
-     file1.write(json.dumps(i_index)) # use `json.loads` to do the reverse
-file1.close()
 
 with open('positional_index.txt', 'w') as file2:
      file2.write(json.dumps(p_index)) # use `json.loads` to do the reverse

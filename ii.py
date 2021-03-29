@@ -1,6 +1,7 @@
 from nltk.tokenize import RegexpTokenizer, word_tokenize
 from collections import defaultdict
 from nltk.stem import snowball
+import json
 
 
 ##### stop words list
@@ -38,9 +39,8 @@ stemmer = snowball.SnowballStemmer('english')
 dictionary = list( sorted( set([stemmer.stem(x) for x in words])) )
 
 
-
-# all file data at each index. type = str
-files = []
+## all file data at each index. type = 2d arr
+files = [[]]
 for j in range(1,51):
     text = ""
     f = open( "ShortStories/" + str(j) + ".txt","r")
@@ -56,15 +56,22 @@ for j in range(1,51):
     docid_stem = list( sorted( set([stemmer.stem(x) for x in wo_stopwords])) )
     files.append(docid_stem)
 
+
 #### inverted index
 
-i_index = defaultdict(list)for word in dictionary:
+i_index = defaultdict(list)
+for word in dictionary:
     # i_index[word]
+    templist = []
     for docid in range(1,51):
-        if word in files[docid-1]:
-            i_index[word].append(docid)
-    l = len(i_index[word])
+        if word in files[docid]:
+            templist.append(docid)
+            # i_index[word].append(docid-1)
+    l = len(templist)
     # the 0th element of the key-value list = frequency of documents for 'word'
-    i_index[word].insert(0,l) 
+    i_index[word] = [l, templist]
 
-print(i_index.keys())
+
+with open('inverted_index.txt', 'w') as file1:
+     file1.write(json.dumps(i_index)) # use `json.loads` to do the reverse
+file1.close()
