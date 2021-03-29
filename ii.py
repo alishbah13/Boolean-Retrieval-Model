@@ -17,7 +17,6 @@ stories = ""
 for i in range(1,51):
     ss = open( "ShortStories/" + str(i) + ".txt","r")
     for text in ss:
-        # stories.append(text.strip())
         stories = stories + text.strip() + " "
     ss.close()    
 
@@ -47,13 +46,19 @@ for j in range(1,51):
     for lines in f:
         text = text + lines.strip() + " "
     f.close()
+    
+    # tokenize
     docid_tokens = tokenizer.tokenize(text)
+    
     # case fold to lowercase
     docid_words = [w.lower() for w in docid_tokens]
+    
     #remove stopwords
     wo_stopwords = [wrd for wrd in docid_words if not wrd in stop_words]
+    
     # stem and order alphabetically
     docid_stem = list( sorted( set([stemmer.stem(x) for x in wo_stopwords])) )
+    
     files.append(docid_stem)
 
 
@@ -61,12 +66,10 @@ for j in range(1,51):
 
 i_index = defaultdict(list)
 for word in dictionary:
-    # i_index[word]
     templist = []
     for docid in range(1,51):
         if word in files[docid]:
             templist.append(docid)
-            # i_index[word].append(docid-1)
     l = len(templist)
     # the 0th element of the key-value list = frequency of documents for 'word'
     i_index[word] = [l, templist]

@@ -34,10 +34,6 @@ lower_words = [w.lower() for w in tokens]
 word = set([wrd for wrd in lower_words if not wrd in stop_words])
 dictionary = list(word)
 print(dictionary)
-# stem and order alphabetically
-# stemmer = snowball.SnowballStemmer('english')
-# dictionary = list( sorted( set([stemmer.stem(x) for x in words])) )
-
 
 
 ## all file data at each index. type = 2d arr
@@ -51,8 +47,6 @@ for j in range(1,51):
     docid_tokens = tokenizer.tokenize(text)
     # case fold to lowercase
     docid_words = [w.lower() for w in docid_tokens]
-    # stem
-    # docid_stem = list( [stemmer.stem(x) for x in docid_words])
     print(docid_words)
     files.append(docid_words)
 
@@ -73,11 +67,6 @@ for word in dictionary:
             # posting_list.append(temp)
             docs += 1
     p_index[word] = [docs, temp]
-
-# # print(p_index.keys())
-# print('write', p_index['write'])
-# print( '/n')
-# print('written', p_index['written'])
 
 with open('positional_index.txt', 'w') as file2:
      file2.write(json.dumps(p_index)) # use `json.loads` to do the reverse
