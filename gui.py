@@ -6,8 +6,8 @@ from qp import process_query
 def show():
 
     tempList = process_query(raw_query.get())
-    print("^^^^",tempList)
     result_list = []
+
     if len(tempList) >= 1:
         for i in range(1,len(tempList)+1):
             result_list.append([i, str(tempList[i-1]) + ".txt"])
@@ -24,7 +24,7 @@ windowHeight = root.winfo_reqheight()
 positionRight = int(root.winfo_screenwidth()/2 - windowWidth)
 positionDown = int(root.winfo_screenheight()/2 - windowHeight)
 root.geometry("+{}+{}".format(positionRight, positionDown)) 
-# root.geometry("{}x{}+{}+{}".format(windowWidth, windowHeight, positionRight, positionDown))
+
 
 raw_query = StringVar()
 
@@ -34,7 +34,7 @@ button = tk.Button(root, text="Search",command=show).grid(row=2, column=0, colum
 
 
 
-# create Treeview with 3 columns
+# create Treeview with 2 columns
 cols = ('S.No', 'Document Name')
 listBox = ttk.Treeview(root, columns=cols, show='headings')
 # set column headings
@@ -42,7 +42,6 @@ for col in cols:
     listBox.heading(col, text=col)    
 listBox.grid(row=3, column=0, columnspan=2)
 
-# showScores = tk.Button(root, text="Show results", width=15, command=show).grid(row=4, column=0)
 closeButton = tk.Button(root, text="Close", width=15, command=exit).grid(row=4, columnspan=3)
 
 root.mainloop()

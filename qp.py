@@ -70,7 +70,8 @@ def process_query(raw_query):
 
     prox_q = tok_query
     stemmer = snowball.SnowballStemmer('english')
-    query = list( sorted( set([stemmer.stem(x) for x in tok_query])) )
+    # query = list( sorted( set([stemmer.stem(x) for x in tok_query])) )
+    query = tok_query
     result = []
     # priority of processing -> NOT > AND > OR > /k :. accordingly weighted
         #process NOT
@@ -79,40 +80,40 @@ def process_query(raw_query):
     if 'not' in query:
         positions = [i for i, x in enumerate(query) if x == 'not']
         for nt in range(len(positions)):
-            print(query)
+            print("xxx" ,query)
             query[nt+1] = not_tok(query[nt+1])
             # del query[nt]
-            print("8" , query)
             if len(query)==2:
                 result = query[1]
+            del query[nt]
     #process AND
     if 'and' in query:
         and_positions = [i for i, x in enumerate(query) if x == 'and']
         for an in and_positions:
             if type(query[an-1]) == str and type(query[an+1]) == str:
-                result = and_tok([query[an-1], query[an+1]])
+                result =list( and_tok([query[an-1], query[an+1]]))
             elif type(query[an-1]) == list and type(query[an+1]) == list:
-                result = query[an-1] & query[an+1]
+                result = list(query[an-1] & query[an+1])
             elif type(query[an-1]) == list and type(query[an+1]) == str:
                 set_temp = set(i_index[query[an+1]][1])
-                result = set(query[an-1]) & set_temp
+                result = list( set(query[an-1]) & set_temp) 
             elif type(query[an+1]) == list and type(query[an-1]) == str:
                 set_temp = set(i_index[query[an-1]][1])
-                result = set(query[an-1]) & set_temp
+                result = list(set(query[an-1]) & set_temp)
     # process OR            
     if 'or' in query:
         or_positions = [i for i, x in enumerate(query) if x == 'or']
         for an in or_positions:
             if type(query[an-1]) == list and type(query[an+1]) == list:
-                result = query[an-1] | query[an+1]
+                result = list( query[an-1] | query[an+1])
             elif type(query[an-1]) == str and type(query[an+1]) == str:
-                result = or_tok([query[an-1], query[an+1]])
+                result = list( or_tok([query[an-1], query[an+1]]) )
             elif type(query[an-1]) == list and type(query[an+1]) == str:
                 set_temp = set(i_index[query[an+1]][1])
-                result = set(query[an-1]) | set_temp
+                result = list(set(query[an-1]) | set_temp)
             elif type(query[an+1]) == list and type(query[an-1]) == str:
                 set_temp = set(i_index[query[an-1]][1])
-                result = set(query[an-1]) | set_temp
+                result = list(set(query[an-1]) | set_temp)
     # process /k            
     if '/' in str(query):
         prx_positions = [i for i, x in enumerate(prox_q) if x[:1] == '/']
