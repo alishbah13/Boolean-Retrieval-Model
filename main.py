@@ -1,11 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
-from qp import process_query
+from qp import query_processor
 
 def show():
 
-    tempList = process_query(raw_query.get())
+    tempList = query_processor(raw_query.get())
     result_list = []
 
     if len(tempList) >= 1:
@@ -18,7 +18,7 @@ def show():
         listBox.insert("", "end", values=( num, name))
 
 root = tk.Tk()
-
+root.title('Boolean Retrieval')
 windowWidth = root.winfo_reqwidth()
 windowHeight = root.winfo_reqheight()
 positionRight = int(root.winfo_screenwidth()/2 - windowWidth)
