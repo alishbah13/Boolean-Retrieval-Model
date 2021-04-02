@@ -37,6 +37,7 @@ button = tk.Button(root, text="Search",command=show).grid(row=2, column=0, colum
 # create Treeview with 2 columns
 cols = ('S.No', 'Document Name')
 listBox = ttk.Treeview(root, columns=cols, show='headings', height = 20)
+
 # set column headings
 for col in cols:
     listBox.heading(col, text=col)    
