@@ -56,7 +56,6 @@ for j in range(1,51):
  
 p_index = defaultdict(dict)
 for word in dictionary:
-    # p_index[word] = []
     posting_list = []
     docs = 0
     temp = {}
@@ -64,7 +63,6 @@ for word in dictionary:
         positions = [i for i, x in enumerate(files[docid]) if x == word]
         if len(positions) > 0 :
             temp[docid] = [len(positions), positions]
-            # posting_list.append(temp)
             docs += 1
     p_index[word] = [docs, temp]
 

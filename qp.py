@@ -15,8 +15,6 @@ p_index = defaultdict(lambda: [])
 with open("positional_index.txt") as file2:
     p_index = json.load(file2)
 
-
-
 #### utilities to process boolean ops #####
 
 stemmer = snowball.SnowballStemmer('english')
@@ -128,7 +126,6 @@ def query_processor(query):
             prx_positions = prx_positions[0:n] + [prx_positions[p] - 2 for p in range( n, len(prx_positions) )]
         
     
-    # query = stemmer.stem(x) for x in query
     result = query
 
     if len(query) == 1:
@@ -137,9 +134,7 @@ def query_processor(query):
 
     if 'not' in query:
         while 'not' in query:
-        # not_positions = [i for i, x in enumerate(query) if x == 'not']
             nt = query.index('not')
-            # for nt in not_positions:
             if type(query[nt + 1]) == str:
                 temp = not_str( query[nt+1] )
             elif type(query[ nt + 1]) == list:
@@ -183,5 +178,3 @@ def query_processor(query):
     print(sorted(result[0]))
     return sorted(result[0])
 
-
-# query_processor(query)
